@@ -27,7 +27,10 @@ int main() {
     server_address.sin_addr.s_addr = INADDR_ANY;
     server_address.sin_port = htons(SERVER_PORT);
 
-    int bind_status = bind(server_socket, (struct sockaddr *) &server_address, sizeof(server_address));
+    int bind_status = bind(
+        server_socket,
+        (struct sockaddr *) &server_address,
+        sizeof(server_address));
     ASSERT(bind_status == 0, "Failed to bind to server socket.");
 
     // Start listening for connections on server socket.
@@ -48,7 +51,10 @@ int main() {
 
         struct sockaddr_in client_address;
         socklen_t client_address_size = sizeof(client_address);
-        int client_socket = accept(server_socket,(struct sockaddr *) &client_address, &client_address_size);
+        int client_socket = accept(
+            server_socket,
+            (struct sockaddr *) &client_address,
+            &client_address_size);
         ASSERT(client_socket >= 0, "Failed to accept incoming connection.");
 
         printf("Accepted an incoming connection.\n");
@@ -67,10 +73,13 @@ int main() {
 
         // Clean up by closing the socket.
         //
-        // Shutdown precedes close to make sure protocol level shutdown is executed completely.
-        // Close without shutdown may use RST instead of FIN to terminate connection, dropping data that is in flight.
+        // Shutdown precedes close to make sure protocol level,
+        // shutdown is executed completely.
+        // Close without shutdown may use RST instead of FIN to
+        // terminate connection, dropping data that is in flight.
         //
-        // It is also possible to use shutdown to close input and output streams independently.
+        // It is also possible to use shutdown to close input and
+        // output streams independently.
 
         int shutdown_status = shutdown(client_socket, SHUT_RDWR);
         ASSERT(shutdown_status == 0, "Failed to shutdown incoming connection.");

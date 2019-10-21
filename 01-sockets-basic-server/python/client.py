@@ -1,6 +1,6 @@
 import socket
 
-from shared import *
+from shared import SERVER_ADDR, SERVER_PORT, SOCKET_BUFFER_SIZE, ctm_to_tm, parse_tm, time
 
 
 # Safe handling of resources that require releasing on exceptions.

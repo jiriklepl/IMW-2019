@@ -1,6 +1,6 @@
 import socket
 
-from shared import *
+from shared import pack_tm, tm_to_ctm, make_tm, SERVER_PORT, SERVER_SOCKET_BACKLOG
 
 # Safe handling of resources that require releasing on exceptions.
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
