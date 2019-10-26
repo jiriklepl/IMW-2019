@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.lex": "lex",
+			"*.h": "c",
+			"*.c": "c"
+		},
+		"cpplint.filters": [
+			"-legal",
+			"-build/header_guard",
+			"-build/include_subdir",
+		]
+	}
+}
