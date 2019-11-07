@@ -1,9 +1,7 @@
 # Socket Based Server
 
+FOR SOME REASON CANNOT BE COMPILED - PROTOBUF HAS UNDEFINED REFERENCES IN IT
+(NOT ENOUGH INFORMATION TO RESOLVE THIS)
+
 ## Running the example
 
-```bash
-> make
-> ./server &
-> ./client
-```

@@ -1,8 +1,8 @@
 CC := g++
 C_FLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 
-RELEASE_FLAGS := -O2 -march=native -DNDEBUG
-DEBUG_FLAGS   := -g -DDEBUG
+RELEASE_FLAGS := 
+DEBUG_FLAGS   := 
 
 BIN     := bin
 SRC     := src
@@ -19,34 +19,31 @@ EXECUTABLE  := main
 endif
 
 
-PROTOBUF_FILES   := $(TMP)/time.pb.cc $(TMP)/time.pb.h
-PROTOBUF_SRC     := $(TMP)/time.pb.cc
-PROTOBUF_COMMAND := protoc $(PROTO)/time.proto --proto_path=$(PROTO) --cpp_out=$(TMP)
+PROTOBUF_FILES   := $(TEMP)/time.pb.cc $(TEMP)/time.pb.h
+PROTOBUF_SRC     := $(TEMP)/time.pb.cc
+PROTOBUF_COMMAND := protoc $(PROTO)/time.proto --proto_path=$(PROTO) --cpp_out=$(TEMP)
 
 
-SRC_FILES = $(wildcard $(SRC)/*.c) $(PROTOBUF_SRC)
-OBJ_FILES = $(patsubst $(SRC)/%.c,$(TEMP)/%.o,$(patsubst $(TEMP)/%.c,$(TEMP)/%.o,$(SRC_FILES)))
+SERVER_FILES := $(SRC)/server.cc $(PROTOBUF_SRC)
+CLIENT_FILES := $(SRC)/server.cc $(PROTOBUF_SRC)
 
-COMPILE = $(CC) -c $(C_FLAGS) -I$(INCLUDE) -o$@ $<
+SERVER_OBJ_FILES = $(patsubst $(SRC)/%.cc,$(TEMP)/%.o,$(patsubst $(TEMP)/%.cc,$(TEMP)/%.o,$(SERVER_FILES)))
+CLIENT_OBJ_FILES = $(patsubst $(SRC)/%.cc,$(TEMP)/%.o,$(patsubst $(TEMP)/%.cc,$(TEMP)/%.o,$(CLIENT_FILES)))
 
-LINK_COMMAND = $(CC) $(C_FLAGS) -o$@ $^
+COMPILE = $(CC) -c $(C_FLAGS) -I$(INCLUDE) -I$(TEMP) $(shell pkg-config --cflags protobuf) -o$@ $<
+
+LINK_COMMAND = $(CC) $(C_FLAGS) $(shell pkg-config --libs protobuf) -o$@ $^
 
 
-.PHONY: all clean run debug release
+.PHONY: all clean run
 
-all: release
-
-release: C_FLAGS += $(RELEASE_FLAGS)
-release: $(BIN) $(TEMP) $(PROTOBUF_FILES) $(BIN)/$(EXECUTABLE)
-
-debug: C_FLAGS += $(DEBUG_FLAGS)
-debug: $(BIN) $(TEMP) $(PROTOBUF_FILES) $(BIN)/$(EXECUTABLE)
+all: $(BIN)/server
 
 clean:
 	$(RM) $(wildcard $(BIN)/*) $(wildcard $(TEMP)/*)
 
 run: all
-	$(BIN)/$(EXECUTABLE)
+	$(BIN)/server
 
 
 $(BIN):
@@ -55,14 +52,17 @@ $(BIN):
 $(TEMP):
 	mkdir $(TEMP)
 
-$(TEMP)/%.o: $(SRC)/%.c $(wildcard $(INCLUDE)/*)
+$(TEMP)/%.o: $(SRC)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES)
 	$(COMPILE)
 
-$(TEMP)/%.o: $(TEMP)/%.c $(wildcard $(INCLUDE)/*)
+$(TEMP)/%.o: $(TEMP)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES)
 	$(COMPILE)
 
 $(PROTOBUF_FILES): $(PROTO)
-	$(BISON_COMMAND)
+	$(PROTOBUF_COMMAND)
 
-$(BIN)/$(EXECUTABLE): $(OBJ_FILES)
+$(BIN)/server: $(SERVER_OBJ_FILES)
+	$(LINK_COMMAND)
+
+$(BIN)/client: $(CLIENT_OBJ_FILES)
 	$(LINK_COMMAND)
