@@ -1,32 +1,68 @@
-.PHONY: all clean
+CC := g++
+C_FLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 
-# Settings
+RELEASE_FLAGS := -O2 -march=native -DNDEBUG
+DEBUG_FLAGS   := -g -DDEBUG
 
-MAKEFLAGS += --no-builtin-rules --no-builtin-variables
+BIN     := bin
+SRC     := src
+INCLUDE := include
+LIB     := lib
+TEMP    := tmp
+PROTO   := ../proto
 
-CPP = g++ -std=c++17
-CPP_OPTS = -O0 -g -Wall -Wextra -Werror
 
-# Files
+ifeq ($(OS),Windows_NT)
+EXECUTABLE  := main.exe
+else
+EXECUTABLE  := main
+endif
 
-ALL_EX = client server
-ALL_DD = $(addsuffix .dep, $(ALL_EX))
 
-# Rules
+PROTOBUF_FILES   := $(TMP)/time.pb.cc $(TMP)/time.pb.h
+PROTOBUF_SRC     := $(TMP)/time.pb.cc
+PROTOBUF_COMMAND := protoc $(PROTO)/time.proto --proto_path=$(PROTO) --cpp_out=$(TMP)
 
-all: $(ALL_EX)
+
+SRC_FILES = $(wildcard $(SRC)/*.c) $(PROTOBUF_SRC)
+OBJ_FILES = $(patsubst $(SRC)/%.c,$(TEMP)/%.o,$(patsubst $(TEMP)/%.c,$(TEMP)/%.o,$(SRC_FILES)))
+
+COMPILE = $(CC) -c $(C_FLAGS) -I$(INCLUDE) -o$@ $<
+
+LINK_COMMAND = $(CC) $(C_FLAGS) -o$@ $^
+
+
+.PHONY: all clean run debug release
+
+all: release
+
+release: C_FLAGS += $(RELEASE_FLAGS)
+release: $(BIN) $(TEMP) $(PROTOBUF_FILES) $(BIN)/$(EXECUTABLE)
+
+debug: C_FLAGS += $(DEBUG_FLAGS)
+debug: $(BIN) $(TEMP) $(PROTOBUF_FILES) $(BIN)/$(EXECUTABLE)
 
 clean:
-	rm -f *.o
-	rm -f *.dep
-	rm -f $(ALL_EX)
+	$(RM) $(wildcard $(BIN)/*) $(wildcard $(TEMP)/*)
 
-$(ALL_EX): %: %.cc
-	$(CC) $(CC_OPTS) -o $@ $<
+run: all
+	$(BIN)/$(EXECUTABLE)
 
-# Deps
 
--include $(ALL_DD)
+$(BIN):
+	mkdir $(BIN)
 
-%.dep: %.cc
-	$(CC) -MM -MT "$@ $(basename $@).o" -o $@ $<
+$(TEMP):
+	mkdir $(TEMP)
+
+$(TEMP)/%.o: $(SRC)/%.c $(wildcard $(INCLUDE)/*)
+	$(COMPILE)
+
+$(TEMP)/%.o: $(TEMP)/%.c $(wildcard $(INCLUDE)/*)
+	$(COMPILE)
+
+$(PROTOBUF_FILES): $(PROTO)
+	$(BISON_COMMAND)
+
+$(BIN)/$(EXECUTABLE): $(OBJ_FILES)
+	$(LINK_COMMAND)
