@@ -7,7 +7,8 @@
 	"settings": {
 		"files.associations": {
 			"*.lex": "lex",
-			"*.h": "c",
+			"01-sockets-basic-server/*.h": "c",
+			"02-sockets-basic-server/*.h": "cpp",
 			"*.c": "c"
 		},
 		"cpplint.filters": [
