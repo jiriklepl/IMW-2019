@@ -28,11 +28,14 @@
 // Custom assert macro for custom message in error report.
 // Reuses assert helper definitions from standard library.
 
+#ifdef DEBUG
 #define ASSERT(cond, text) \
     ((cond) \
         ? __ASSERT_VOID_CAST(0) \
         : __assert_fail(text, __FILE__, __LINE__, __ASSERT_FUNCTION))
-
+#else
+#define ASSERT(cond, text) __ASSERT_VOID_CAST (0)
+#endif
 
 
 class request_parser {
