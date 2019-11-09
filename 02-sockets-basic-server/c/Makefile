@@ -25,7 +25,7 @@ PROTOBUF_COMMAND := protoc $(PROTO)/time.proto --proto_path=$(PROTO) --cpp_out=$
 
 
 SERVER_FILES := $(SRC)/server.cc $(PROTOBUF_SRC)
-CLIENT_FILES := $(SRC)/server.cc $(PROTOBUF_SRC)
+CLIENT_FILES := $(SRC)/client.cc $(PROTOBUF_SRC)
 
 SERVER_OBJ_FILES = $(patsubst $(SRC)/%.cc,$(TEMP)/%.o,$(patsubst $(TEMP)/%.cc,$(TEMP)/%.o,$(SERVER_FILES)))
 CLIENT_OBJ_FILES = $(patsubst $(SRC)/%.cc,$(TEMP)/%.o,$(patsubst $(TEMP)/%.cc,$(TEMP)/%.o,$(CLIENT_FILES)))
