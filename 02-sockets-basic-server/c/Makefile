@@ -59,7 +59,7 @@ $(TEMP)/%.o: $(SRC)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES) $(TEMP)
 $(TEMP)/%.o: $(TEMP)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES) $(TEMP)
 	$(COMPILE)
 
-$(PROTOBUF_FILES): $(PROTO)
+$(PROTOBUF_FILES): $(PROTO) $(TEMP)
 	$(PROTOBUF_COMMAND)
 
 $(BIN)/server: $(SERVER_OBJ_FILES)
