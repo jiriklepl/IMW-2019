@@ -62,12 +62,12 @@ class request_parser {
  *
  * @retval returns a time_message::TimeRequest object of requested time values
  */
-time_message::TimeRequest parse_options(const char* options[]) {
+time_message::TimeRequest parse_options(int count, const char* options[]) {
     time_message::TimeRequest request;
     request_parser parser;
     const char** option = options;
 
-    while (*option != nullptr) {
+    while (count-- > 0) {
         std::string option_string;
         bool set_value;
 

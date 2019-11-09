@@ -34,10 +34,7 @@ int main(int argc, const char* argv[]) {
     //
     // We assume that the response is a zero terminated string.
 
-    auto request = parse_options(
-        (argc > 0)
-        ? argv + 1
-        : nullptr);
+    auto request = parse_options(argc - 1, argv + 1);
     request.SerializeToFileDescriptor(client_socket);
 
     time_message::TimeMessage message;
