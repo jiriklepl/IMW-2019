@@ -85,6 +85,8 @@ time_message::TimeRequest parse_options(const char* options[]) {
         ) {
             (request.*(iterator->second))(set_value);
         }
+
+        ++option;
     }
 
     return request;
