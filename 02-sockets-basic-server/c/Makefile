@@ -1,5 +1,5 @@
 CC := g++
-C_FLAGS := -std=c++17 -g -O0 --verbose
+C_FLAGS := -std=c++17 -O2 -DNDEBUG -march=native
 
 RELEASE_FLAGS := 
 DEBUG_FLAGS   := 
