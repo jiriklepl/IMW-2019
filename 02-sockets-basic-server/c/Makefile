@@ -1,5 +1,5 @@
 CC := g++
-C_FLAGS := -std=c++17 -Wall -Wextra -Wpedantic
+C_FLAGS := -std=c++17 -g -O0 --verbose
 
 RELEASE_FLAGS := 
 DEBUG_FLAGS   := 
@@ -35,15 +35,16 @@ COMPILE = $(CC) -c $(C_FLAGS) -I$(INCLUDE) -I$(TEMP) $(shell pkg-config --cflags
 LINK_COMMAND = $(CC) $(C_FLAGS) $(shell pkg-config --libs protobuf) -o$@ $^
 
 
-.PHONY: all clean run
+.PHONY: all clean server client
 
-all: $(BIN)/server
+server: $(BIN)/server
+
+client: $(BIN)/client
+
+all: $(BIN)/server $(BIN)/client
 
 clean:
 	$(RM) $(wildcard $(BIN)/*) $(wildcard $(TEMP)/*)
-
-run: all
-	$(BIN)/server
 
 
 $(BIN):
