@@ -37,9 +37,9 @@ LINK_COMMAND = $(CC) $(C_FLAGS) $(shell pkg-config --libs protobuf) -o$@ $^
 
 .PHONY: all clean server client
 
-server: $(BIN)/server
+server: $(BIN)/server $(BIN)
 
-client: $(BIN)/client
+client: $(BIN)/client $(BIN)
 
 all: $(BIN)/server $(BIN)/client
 
@@ -53,10 +53,10 @@ $(BIN):
 $(TEMP):
 	mkdir $(TEMP)
 
-$(TEMP)/%.o: $(SRC)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES)
+$(TEMP)/%.o: $(SRC)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES) $(TEMP)
 	$(COMPILE)
 
-$(TEMP)/%.o: $(TEMP)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES)
+$(TEMP)/%.o: $(TEMP)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES) $(TEMP)
 	$(COMPILE)
 
 $(PROTOBUF_FILES): $(PROTO)
