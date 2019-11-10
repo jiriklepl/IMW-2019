@@ -32,34 +32,29 @@ CLIENT_OBJ_FILES = $(patsubst $(SRC)/%.cc,$(TEMP)/%.o,$(patsubst $(TEMP)/%.cc,$(
 
 COMPILE = $(CC) -c $(C_FLAGS) -I$(INCLUDE) -I$(TEMP) $(shell pkg-config --cflags protobuf) -o$@ $<
 
-LINK_COMMAND = $(CC) $(C_FLAGS) $(shell pkg-config --libs protobuf) -o$@ $^
+LINK_COMMAND = $(CC) $(C_FLAGS) -o$@ $^ $(shell pkg-config --libs protobuf) 
 
 
 .PHONY: all clean server client
 
-server: $(BIN)/server $(BIN)
+all: $(BIN)/server $(BIN)/client
 
-client: $(BIN)/client $(BIN)
+server: $(BIN)/server
+
+client: $(BIN)/client
 
 all: $(BIN)/server $(BIN)/client
 
 clean:
 	$(RM) $(wildcard $(BIN)/*) $(wildcard $(TEMP)/*)
 
-
-$(BIN):
-	mkdir $(BIN)
-
-$(TEMP):
-	mkdir $(TEMP)
-
-$(TEMP)/%.o: $(SRC)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES) $(TEMP)
+$(TEMP)/%.o: $(SRC)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES)
 	$(COMPILE)
 
-$(TEMP)/%.o: $(TEMP)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES) $(TEMP)
+$(TEMP)/%.o: $(TEMP)/%.cc $(wildcard $(INCLUDE)/*) $(PROTOBUF_FILES)
 	$(COMPILE)
 
-$(PROTOBUF_FILES): $(PROTO) $(TEMP)
+$(PROTOBUF_FILES): $(PROTO)/time.proto
 	$(PROTOBUF_COMMAND)
 
 $(BIN)/server: $(SERVER_OBJ_FILES)

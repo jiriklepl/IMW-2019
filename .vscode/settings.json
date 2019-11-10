@@ -6,4 +6,5 @@
         "struct",
         "subdir"
     ],
+    "python.pythonPath": "/usr/bin/python3",
 }

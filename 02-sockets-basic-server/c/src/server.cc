@@ -53,11 +53,19 @@ int main() {
         // Just copy everything back to the client.
 
         time_message::TimeRequest request;
-        request.ParseFromFileDescriptor(client_socket);
+        char buffer[SOCKET_BUFFER_SIZE];
+        std::size_t expected = SOCKET_BUFFER_SIZE, received = 0;
+
+        while ((received = read(client_socket, buffer, expected)) > 0) {
+            request.ParseFromString(buffer);
+        }
+
+        printf("Parsed request.\n");
 
         auto message = create_message(request);
 
         message.SerializeToFileDescriptor(client_socket);
+    fsync(client_socket);
 
         printf("Client disconnected.\n");
 

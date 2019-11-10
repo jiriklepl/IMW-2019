@@ -1,6 +1,8 @@
 import socket
+import time_pb2
+import datetime
 
-from shared import pack_tm, tm_to_ctm, make_tm, SERVER_PORT, SERVER_SOCKET_BACKLOG
+from shared import SERVER_PORT, SERVER_SOCKET_BACKLOG, SOCKET_BUFFER_SIZE
 
 # Safe handling of resources that require releasing on exceptions.
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
@@ -14,10 +16,29 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
 
         # Safe handling of resources that require releasing on exceptions.
         with server_socket.accept()[0] as client_socket:
-
             print('Accepted an incoming connection.')
+            
+            print('Receiving request now.')
+    
+            request = time_pb2.TimeRequest()
+            request.ParseFromString(client_socket.recv(SOCKET_BUFFER_SIZE))
 
-            client_socket.send(pack_tm(tm_to_ctm(make_tm())))
+            answer = time_pb2.TimeMessage()
+            now = datetime.datetime.now()
+
+            if request.seconds: answer.seconds = now.seconds
+            if request.minutes: answer.minutes = now.minutes
+            if request.hours: answer.hours = now.hours
+            if request.mday: answer.mday = now.mday
+            if request.month: answer.month = now.month
+            if request.year: answer.year = now.year
+            if request.wday: answer.wday = now.wday
+            if request.yday: answer.yday = now.yday
+            if request.isdst: answer.isdst = now.isdst
+            
+            print('Sending answer now.')
+
+            client_socket.send(answer.SerializeToString())
 
             print('Client disconnected.')
 

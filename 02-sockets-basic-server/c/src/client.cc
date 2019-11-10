@@ -35,10 +35,17 @@ int main(int argc, const char* argv[]) {
     // We assume that the response is a zero terminated string.
 
     auto request = parse_options(argc - 1, argv + 1);
-    request.SerializeToFileDescriptor(client_socket);
+    request.SerializePartialToFileDescriptor(client_socket);
+    send(client_socket, "", 1, 0);
+
+    printf("Sent options.\n");
 
     time_message::TimeMessage message;
+
     message.ParseFromFileDescriptor(client_socket);
+    fsync(client_socket);
+
+    printf("Sent options connection.\n");
 
     if (request.seconds()) {
         std::cout << message.seconds();
