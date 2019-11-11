@@ -13,32 +13,43 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
 
     request = time_pb2.TimeRequest()
 
-    def set_true(x):
-        x = True
-
-    switcher = {
-        "seconds": lambda : set_true(request.seconds),
-        "minutes": lambda : set_true(request.minutes),
-        "hours": lambda : set_true(request.hours),
-        "mday": lambda : set_true(request.mday),
-        "month": lambda : set_true(request.month),
-        "year": lambda : set_true(request.year),
-        "wday": lambda : set_true(request.wday),
-        "yday": lambda : set_true(request.yday),
-        "isdst": lambda : set_true(request.isdst),
-    }
-
     for argv in sys.argv[1:]:
-        switcher[argv]()
+        if argv == "seconds": request.seconds = True
+        if argv == "minutes": request.minutes = True
+        if argv == "hours": request.hours = True
+        if argv == "mday": request.mday = True
+        if argv == "month": request.month = True
+        if argv == "year": request.year = True
+        if argv == "wday": request.wday = True
+        if argv == "yday": request.yday = True
+        if argv == "isdst": request.isdst = True
 
     print("Sending request.")
 
-    client_socket.send(request.SerializeToString())
+    data = request.SerializeToString()
+    client_socket.send(data)
 
     print("Receiving answer.")
 
     answer = time_pb2.TimeMessage()
-    answer.ParseFromString(client_socket.recv(SOCKET_BUFFER_SIZE))
+
+    while True:
+        data = client_socket.recv (SOCKET_BUFFER_SIZE)
+        print(data)
+        if len (data) == 0 or answer.ParseFromString(data):
+            break
+
+    print("Answer received.")
+
+    if request.seconds == True: print(answer.seconds)
+    if request.minutes == True: print(answer.minutes)
+    if request.hours == True: print(answer.hours)
+    if request.mday == True: print(answer.mday)
+    if request.month == True: print(answer.month)
+    if request.year == True: print(answer.year)
+    if request.wday == True: print(answer.wday)
+    if request.yday == True: print(answer.yday)
+    if request.isdst == True: print(answer.isdst)
 
     # Shutdown precedes close to make sure protocol level shutdown is executed completely.
     # Close without shutdown may use RST instead of FIN to terminate connection, dropping data that is in flight.

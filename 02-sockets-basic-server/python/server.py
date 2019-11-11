@@ -21,24 +21,31 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
             print('Receiving request now.')
     
             request = time_pb2.TimeRequest()
-            request.ParseFromString(client_socket.recv(SOCKET_BUFFER_SIZE))
+
+            while True:
+                data = client_socket.recv (SOCKET_BUFFER_SIZE)
+                print(data)
+                if len (data) == 0 or request.ParseFromString(data):
+                    break
+                
 
             answer = time_pb2.TimeMessage()
             now = datetime.datetime.now()
 
-            if request.seconds: answer.seconds = now.seconds
-            if request.minutes: answer.minutes = now.minutes
-            if request.hours: answer.hours = now.hours
-            if request.mday: answer.mday = now.mday
-            if request.month: answer.month = now.month
-            if request.year: answer.year = now.year
-            if request.wday: answer.wday = now.wday
-            if request.yday: answer.yday = now.yday
-            if request.isdst: answer.isdst = now.isdst
+            if request.seconds == True: answer.seconds = now.seconds
+            if request.minutes == True: answer.minutes = now.minutes
+            if request.hours == True: answer.hours = now.hours
+            if request.mday == True: answer.mday = now.mday
+            if request.month == True: answer.month = now.month
+            if request.year == True: answer.year = now.year
+            if request.wday == True: answer.wday = now.wday
+            if request.yday == True: answer.yday = now.yday
+            if request.isdst == True: answer.isdst = now.isdst
             
             print('Sending answer now.')
 
-            client_socket.send(answer.SerializeToString())
+            data = answer.SerializeToString()
+            client_socket.send(data)
 
             print('Client disconnected.')
 
