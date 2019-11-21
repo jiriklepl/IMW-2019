@@ -7,4 +7,8 @@
         "subdir"
     ],
     "python.pythonPath": "/usr/bin/python3",
+    "files.associations": {
+        "string_view": "cpp",
+        "utility": "cpp"
+    },
 }
