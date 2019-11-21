@@ -1,5 +1,7 @@
 # gRPC Based Server
 
+Melo by byt vsechno OK, bylo zapotrebi dat knihovny v linkeru na spravna mista. Ale po spusteni nejaka core funkce v ramci NewStub vyhazuje chybu v aritmetice, takze nejde overit spravnost. Nefunguje g++ ani clang++
+
 ## Running the example
 
 ```

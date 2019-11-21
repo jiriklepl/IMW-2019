@@ -43,11 +43,11 @@ class MyService : public TimeService::Service {
         }
 
         if (request->year()) {
-            response->set_year(now->tm_year);
+            response->set_year(now->tm_year + 1900);
         }
 
         if (request->wday()) {
-            response->set_wday(now->tm_wday);
+            response->set_wday((now->tm_wday) ? now->tm_wday - 1 : 6);
         }
 
         if (request->yday()) {

@@ -19,7 +19,8 @@ int main(int argc, const char* argv[]) {
         InsecureChannelCredentials());
 
     // Create a stub object that provides the service interface.
-    std::shared_ptr<TimeService::Stub> stub = TimeService::NewStub(channel);
+    std::unique_ptr<TimeService::Stub> stub =
+        TimeService::NewStub(channel);
 
     TimeRequest request;
     for (const char** argp = argv + 1; *argp != nullptr; ++argp) {
