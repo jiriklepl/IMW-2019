@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package time_message;
+
+message TimeMessage {
+    uint32 seconds = 1;
+    uint32 minutes = 2;
+    uint32 hours   = 3;
+    uint32 mday    = 4;
+    uint32 month   = 5;
+    uint32 year    = 6;
+    uint32 wday    = 7;
+    uint32 yday    = 8;
+    uint32 isdst   = 9;
+}
+
+message TimeRequest {
+    bool seconds = 1;
+    bool minutes = 2;
+    bool hours   = 3;
+    bool mday    = 4;
+    bool month   = 5;
+    bool year    = 6;
+    bool wday    = 7;
+    bool yday    = 8;
+    bool isdst   = 9;
+}
+
+service TimeService {
+    rpc GetTime (TimeRequest) returns (TimeMessage) { }
+}
