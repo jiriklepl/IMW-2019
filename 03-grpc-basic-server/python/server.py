@@ -1,15 +1,12 @@
 import grpc
 import time
-import sys
-
-sys.path.append('.')
 
 from concurrent import futures
 
 from shared import *
 
-from proto.time_pb2 import *
-from proto.time_pb2_grpc import *
+from time_pb2 import *
+from time_pb2_grpc import *
 
 
 # Service implementation.

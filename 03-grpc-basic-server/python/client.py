@@ -1,12 +1,10 @@
 import grpc
 import sys
 
-sys.path.append('.')
-
 from shared import *
 
-from proto.time_pb2 import *
-from proto.time_pb2_grpc import *
+from time_pb2 import *
+from time_pb2_grpc import *
 
 
 # Create the channel used to connect to the server.
