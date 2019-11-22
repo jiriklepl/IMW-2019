@@ -22,7 +22,7 @@ public class Peer {
 
             Scanner scanner = new Scanner (System.in);
             while (true) {
-                UpdateEvent line = new UpdateEvent{0, "message"};
+                UpdateEvent line = new UpdateEvent(0, "message");
                 Message message = new Message (null, line);
                 channel.send (message);
             }
