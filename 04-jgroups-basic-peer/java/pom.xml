@@ -40,10 +40,6 @@
                             <key>java.net.preferIPv4Stack</key>
                             <value>true</value>
                         </systemProperty>
-                        <systemProperty>
-                            <key>jgroups.bind_addr</key>
-                            <value>127.0.0.1</value>
-                        </systemProperty>
                     </systemProperties>
                 </configuration>
             </plugin>
