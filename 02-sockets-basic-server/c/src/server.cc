@@ -54,9 +54,8 @@ int main() {
 
         time_message::TimeRequest request;
         char buffer[SOCKET_BUFFER_SIZE];
-        std::size_t expected = SOCKET_BUFFER_SIZE, received = 0;
 
-        while ((received = read(client_socket, buffer, expected)) > 0) {
+        while (read(client_socket, buffer, SOCKET_BUFFER_SIZE) > 0) {
             if (request.ParseFromString(buffer)) {
                 break;
             }
