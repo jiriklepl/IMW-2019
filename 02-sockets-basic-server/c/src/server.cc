@@ -57,15 +57,18 @@ int main() {
         std::size_t expected = SOCKET_BUFFER_SIZE, received = 0;
 
         while ((received = read(client_socket, buffer, expected)) > 0) {
-            request.ParseFromString(buffer);
+            if (request.ParseFromString(buffer)) {
+                break;
+            }
         }
 
         printf("Parsed request.\n");
 
         auto message = create_message(request);
 
-        message.SerializeToFileDescriptor(client_socket);
-    fsync(client_socket);
+        std::string response;
+        message.SerializeToString(&response);
+        write(client_socket, response.c_str(), response.length());
 
         printf("Client disconnected.\n");
 

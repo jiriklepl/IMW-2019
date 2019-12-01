@@ -35,15 +35,20 @@ int main(int argc, const char* argv[]) {
     // We assume that the response is a zero terminated string.
 
     auto request = parse_options(argc - 1, argv + 1);
-    request.SerializePartialToFileDescriptor(client_socket);
-    send(client_socket, "", 1, 0);
+    std::string request_string;
+    request.SerializeToString(&request_string);
+    write(client_socket, request_string.c_str(), request_string.length());
 
     printf("Sent options.\n");
 
     time_message::TimeMessage message;
+    char buffer[SOCKET_BUFFER_SIZE];
 
-    message.ParseFromFileDescriptor(client_socket);
-    fsync(client_socket);
+    while (read(client_socket, buffer, SOCKET_BUFFER_SIZE) > 0) {
+        if (message.ParseFromString(buffer)) {
+            break;
+        }
+    }
 
     printf("Sent options connection.\n");
 

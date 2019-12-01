@@ -1,6 +1,6 @@
 import socket
 import time_pb2
-import datetime
+import time
 
 from shared import SERVER_PORT, SERVER_SOCKET_BACKLOG, SOCKET_BUFFER_SIZE
 
@@ -23,24 +23,28 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
             request = time_pb2.TimeRequest()
 
             while True:
-                data = client_socket.recv (SOCKET_BUFFER_SIZE)
+                data : bytes = client_socket.recv (SOCKET_BUFFER_SIZE)
+                if data:
+                    pass
+                else:
+                    break
                 print(data)
                 if len (data) == 0 or request.ParseFromString(data):
                     break
                 
 
             answer = time_pb2.TimeMessage()
-            now = datetime.datetime.now()
+            now = time.localtime(time.time())
 
-            if request.seconds == True: answer.seconds = now.seconds
-            if request.minutes == True: answer.minutes = now.minutes
-            if request.hours == True: answer.hours = now.hours
-            if request.mday == True: answer.mday = now.mday
-            if request.month == True: answer.month = now.month
-            if request.year == True: answer.year = now.year
-            if request.wday == True: answer.wday = now.wday
-            if request.yday == True: answer.yday = now.yday
-            if request.isdst == True: answer.isdst = now.isdst
+            if request.seconds == True: answer.seconds = now.tm_sec
+            if request.minutes == True: answer.minutes = now.tm_min
+            if request.hours == True: answer.hours = now.tm_hour
+            if request.mday == True: answer.mday = now.tm_mday
+            if request.month == True: answer.month = now.tm_mon
+            if request.year == True: answer.year = now.tm_year
+            if request.wday == True: answer.wday = now.tm_wday
+            if request.yday == True: answer.yday = now.tm_yday
+            if request.isdst == True: answer.isdst = now.tm_isdst
             
             print('Sending answer now.')
 

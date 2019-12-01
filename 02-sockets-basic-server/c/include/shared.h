@@ -99,42 +99,42 @@ time_message::TimeMessage create_message(
 ) {
     time_message::TimeMessage message;
     time_t now = time(NULL);
-    tm *gmtm = gmtime(&now);
+    tm *l_tm = localtime(&now);
 
     if (request.seconds()) {
-        message.set_seconds(gmtm->tm_sec);
+        message.set_seconds(l_tm->tm_sec);
     }
 
     if (request.minutes()) {
-        message.set_minutes(gmtm->tm_min);
+        message.set_minutes(l_tm->tm_min);
     }
 
     if (request.hours()) {
-        message.set_hours(gmtm->tm_hour);
+        message.set_hours(l_tm->tm_hour);
     }
 
     if (request.mday()) {
-        message.set_mday(gmtm->tm_mday);
+        message.set_mday(l_tm->tm_mday);
     }
 
     if (request.month()) {
-        message.set_month(gmtm->tm_mon);
+        message.set_month(l_tm->tm_mon);
     }
 
     if (request.year()) {
-        message.set_year(gmtm->tm_year + 1900);
+        message.set_year(l_tm->tm_year + 1900);
     }
 
     if (request.wday()) {
-        message.set_wday(gmtm->tm_wday);
+        message.set_wday((l_tm->tm_wday) ? l_tm->tm_wday - 1 : 6);
     }
 
     if (request.yday()) {
-        message.set_yday(gmtm->tm_yday);
+        message.set_yday(l_tm->tm_yday);
     }
 
     if (request.isdst()) {
-        message.set_isdst(gmtm->tm_isdst);
+        message.set_isdst(l_tm->tm_isdst);
     }
 
     return message;
