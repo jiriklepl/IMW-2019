@@ -66,6 +66,11 @@
 			"-legal",
 			"-build/header_guard",
 			"-build/include_subdir",
-		]
+		],
+		"files.eol": "\n",
+		"files.trimTrailingWhitespace": true,
+		"files.insertFinalNewline": true,
+		"git.autorefresh": true,
+		"git.autofetchPeriod": 10
 	}
 }
