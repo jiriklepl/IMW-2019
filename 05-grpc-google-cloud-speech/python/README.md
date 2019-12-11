@@ -6,7 +6,7 @@ Use for example http://www.voxforge.org. The service can accept WAV and FLAC fil
 
 ## Running the example
 
-```
+```bash
 > python3 -m venv .
 > bin/pip install requests protobuf grpcio google-auth
 > git clone http://github.com/googleapis/googleapis.git

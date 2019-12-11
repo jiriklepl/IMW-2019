@@ -2,7 +2,7 @@
 
 ## Running the example
 
-```
+```bash
 > mvn compile
 > mvn exec:java
 ```
