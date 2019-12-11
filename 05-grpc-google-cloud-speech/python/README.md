@@ -2,7 +2,7 @@
 
 ## Getting audio sample
 
-Use for example http://www.voxforge.org. The service can accept WAV and FLAC files.
+Use for example [voxforge](http://www.voxforge.org). The service can accept WAV and FLAC files.
 
 ## Running the example
 
