@@ -1,13 +1,14 @@
 # Sockets: The Hard Way
 
-
 ## Part One
 
 Implement a socket server that will:
+
 - Listen for incoming connections.
 - Provide information on current time to connected clients.
 
 Implement a socket client that will:
+
 - Connect to the server described above.
 - Query information on current time.
 - Wrap all this in a local function.
@@ -15,7 +16,7 @@ Implement a socket client that will:
 
 ### C Local Function
 
-```
+```c
 /**
  * Return server time in standard structure.
  * @param result Caller allocated structure to fill.
@@ -40,7 +41,7 @@ Check `man localtime` ...
 
 ### Java Local Function
 
-```
+```java
 /**
  * Access server time in standard structure.
  */
@@ -60,7 +61,7 @@ Check `LocalDateTime` ...
 
 ### Python Local Function
 
-```
+```python
 def server_time ():
     """Returns server time in datetime.datetime class."""
     ...
@@ -83,12 +84,12 @@ def server_time ():
 
 Check `help (datetime.datetime)` ...
 
-
 ## Part Two
 
 Implement Part One in at least two programming languages.
 
 Make sure your clients and servers in both languages are interchangeable:
+
 - Run any client with any server.
 - Basic fields are enough (YYYY-MM-DD HH:MM:SS).
 - Use sensible defaults for other fields (TZ, DOW, DOY).

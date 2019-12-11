@@ -1,13 +1,13 @@
 # JGroups: Multicast Messaging
 
-
 ## Part One
 
 Implement a process that will update a shared hash map:
+
 - The shared hash map is available through `SharedHashMap` channel.
 - The updates are transmitted through `UpdateEvent` class.
 
-```
+```java
 import java.io.Serializable;
 
 public class UpdateEvent implements Serializable {
@@ -16,7 +16,6 @@ public class UpdateEvent implements Serializable {
     public String value;
 }
 ```
-
 
 ## Part Two
 
