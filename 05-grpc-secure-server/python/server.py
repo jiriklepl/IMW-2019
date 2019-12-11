@@ -48,7 +48,7 @@ crt_data = open ('server.crt', 'rb').read ()
 credentials = grpc.ssl_server_credentials ([( key_data, crt_data )])
 
 server = grpc.server (futures.ThreadPoolExecutor (max_workers = SERVER_THREAD_COUNT))
-add_AnExampleServiceServicer_to_server (MyServicer (), server)
+add_TimeServiceServicer_to_server (MyServicer (), server)
 server.add_secure_port (SERVER_ADDR, credentials)
 server.start ()
 
