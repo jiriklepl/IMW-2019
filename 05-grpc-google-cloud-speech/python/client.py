@@ -51,8 +51,7 @@ def speech_text(file):
         # Call the service through the stub object.
         response = stub.Recognize (message)
 
-        translate_client = translate.Client()
-
+    translate_client = translate.Client()
     for result in response.results:
         for alternative in result.alternatives:
             text = alternative.transcript
