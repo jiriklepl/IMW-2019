@@ -10,6 +10,8 @@ from google.oauth2 import service_account as google_oauth2_service_account
 from google.auth.transport import grpc as google_auth_transport_grpc
 from google.auth.transport import requests as google_auth_transport_requests
 
+from google.cloud import translate_v2
+
 SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
 SERVICE = 'speech.googleapis.com:443'
 
@@ -42,11 +44,14 @@ with google_auth_transport_grpc.secure_authorized_channel (scoped_credentials, r
     audio.content = open (sys.argv [1], 'rb').read ()
 
     message = RecognizeRequest (config = config, audio = audio)
-    print ('Message:')
-    print (message)
+    # print ('Message:')
+    # print (message)
 
     # Call the service through the stub object.
     response = stub.Recognize (message)
 
     print ('Response:')
     print (response)
+
+    for result in response results:
+        

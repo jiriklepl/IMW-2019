@@ -11,7 +11,7 @@ Use for example [voxforge](http://www.voxforge.org). The service can accept WAV 
 > bin/pip install requests protobuf grpcio google-auth
 > git clone http://github.com/googleapis/googleapis.git
 > cd googleapis
-> make OUTPUT=.. LANGUAGE=python GRPCPLUGIN=$(pkg-config --variable=prefix grpc++)/bin/grpc_python_plugin
+> make OUTPUT=.. LANGUAGE=python GRPCPLUGIN=$(pkg-config --variable=prefix grpc++)/usr/bin/grpc_python_plugin
 > cd ..
 > bin/python client.py /path/to/speech.wav
 ```
